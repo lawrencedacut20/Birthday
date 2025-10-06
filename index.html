@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Sir Ongcal 🎉</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+      font-family: 'Fredoka One', cursive;
+      flex-direction: column;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      animation: popIn 1.3s ease;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin-top: 10px;
+      opacity: 0.9;
+      animation: fadeIn 2s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      80% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      margin-top: 25px;
+      background: #fff;
+      color: #ff5f6d;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.15);
+      background: #ffe6eb;
+    }
+
+    .content {
+      text-align: center;
+      z-index: 10;
+      position: relative;
+    }
+
+    .photo-frame {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid white;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      margin: 15px auto;
+      animation: floatPic 3s ease-in-out infinite;
+    }
+
+    @keyframes floatPic {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: floatEmoji 3s ease-out forwards;
+      z-index: 99;
+    }
+
+    @keyframes floatEmoji {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-200px) scale(1.5) rotate(20deg); }
+    }
+
+    .message {
+      position: absolute;
+      top: 20%;
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      animation: popMessage 2s ease-out forwards;
+    }
+
+    @keyframes popMessage {
+      0% { opacity: 0; transform: scale(0.5); }
+      40% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(0.5); }
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 80px;
+      height: 100px;
+      border-radius: 50%;
+      animation: float 8s ease-in-out infinite;
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-500px) rotate(10deg); }
+      100% { transform: translateY(-1000px) rotate(-10deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <div class="content">
+    <h1>🎉 Happy Birthday Sir Ongcal! 🎉</h1>
+
+    <div class="photo-frame">
+      <img src="1.jpeg" alt="Ongcal Photo">
+    </div>
+
+    <h2>Wishing you joy, laughter, and confetti-filled moments!</h2>
+    <button id="surpriseBtn">Click for a Surprise 😜</button>
+  </div>
+
+  <script>
+    // CONFETTI ANIMATION
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const confettiCount = 200;
+    const confetti = [];
+    const colors = ["#ff0a54", "#ff477e", "#ff85a1", "#fbb1bd", "#cdb4db", "#a2d2ff", "#9bf6ff", "#b9fbc0"];
+
+    class Confetto {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * -canvas.height;
+        this.size = Math.random() * 7 + 3;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.speedY = Math.random() * 3 + 2;
+        this.speedX = Math.random() * 2 - 1;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 4 - 2;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotationSpeed;
+        if (this.y > canvas.height) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        ctx.restore();
+      }
+    }
+    for (let i = 0; i < confettiCount; i++) confetti.push(new Confetto());
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach((c) => { c.update(); c.draw(); });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // BALLOONS
+    const colorsBalloon = ['#ff6b6b', '#ffd93d', '#6bcB77', '#4D96FF', '#c77dff'];
+    for (let i = 0; i < 10; i++) {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      balloon.style.left = `${Math.random() * 100}%`;
+      balloon.style.background = colorsBalloon[Math.floor(Math.random() * colorsBalloon.length)];
+      balloon.style.animationDelay = `${Math.random() * 5}s`;
+      document.body.appendChild(balloon);
+    }
+
+    // FUNNY SURPRISE 😆
+    document.getElementById("surpriseBtn").addEventListener("click", () => {
+      const funnyMessages = [
+        "🎂 SURPRISE! You’re officially older (and still awesome)!",
+        "😂 Another year of chaos begins!",
+        "🎈 You survived another trip around the sun!",
+        "🍰 Calories don’t count today!",
+        "💫 Stay fabulous, Birthday Star!"
+      ];
+      const message = document.createElement("div");
+      message.classList.add("message");
+      message.textContent = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+      message.style.left = "50%";
+      message.style.transform = "translateX(-50%)";
+      document.body.appendChild(message);
+      setTimeout(() => message.remove(), 2000);
+
+      // Emoji burst
+      const emojis = ["🎉", "🎈", "🍰", "🤣", "🎊", "😜", "🥳"];
+      for (let i = 0; i < 20; i++) {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji");
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = `${Math.random() * 100}%`;
+        emoji.style.top = `${window.innerHeight - 50}px`;
+        emoji.style.animationDelay = `${Math.random() * 0.3}s`;
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 3000);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
